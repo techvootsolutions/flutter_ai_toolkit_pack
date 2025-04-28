@@ -28,7 +28,8 @@ class _AiImageLabelingScreenState extends State<AiImageLabelingScreen> {
       imageBytes: bytes,
       onStart: () => setState(() => _result = 'Labeling...'),
       onComplete: (res) {
-        _result = res is Exception ? 'Error: ${res.toString()}' : res.toString();
+        _result =
+            res is Exception ? 'Error: ${res.toString()}' : res.toString();
         setState(() {});
       },
     );
@@ -41,13 +42,16 @@ class _AiImageLabelingScreenState extends State<AiImageLabelingScreen> {
       result: _result,
       customButtonText: 'Pick Image',
       onCustomSubmit: _pickImageAndLabel,
-      resultWidget: _imageBytes != null ? Column(
-        children: [
-          Text(_result ?? '', style: const TextStyle(fontSize: 16)),
-          SizedBox(height: 20,),
-          Image.memory(_imageBytes!),
-        ],
-      ) : null,
+      resultWidget:
+          _imageBytes != null
+              ? Column(
+                children: [
+                  Text(_result ?? '', style: const TextStyle(fontSize: 16)),
+                  SizedBox(height: 20),
+                  Image.memory(_imageBytes!),
+                ],
+              )
+              : null,
     );
   }
 }

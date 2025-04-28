@@ -11,7 +11,8 @@ class AiFeatureDemoScreen extends StatelessWidget {
     ),
     _AiFeature(
       title: '🤖 AI Gemini Generative Chat',
-      description: 'Interact with Google\'s powerful Gemini LLM for natural conversations, creative writing, problem-solving, and information retrieval. Supports multiple themes and real-time responses.',
+      description:
+          'Interact with Google\'s powerful Gemini LLM for natural conversations, creative writing, problem-solving, and information retrieval. Supports multiple themes and real-time responses.',
       route: '/chat-gemini',
     ),
     _AiFeature(
@@ -53,11 +54,19 @@ class AiFeatureDemoScreen extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, feature.route),
             child: Card(
               elevation: 4,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: ListTile(
-                  title: Text(feature.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  title: Text(
+                    feature.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   subtitle: Text(feature.description),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 18),
                 ),

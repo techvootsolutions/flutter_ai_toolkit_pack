@@ -38,9 +38,16 @@ class _AiChatDemoScreenState extends State<AiChatDemoScreen> {
           setState(() {
             _isTyping = false;
             if (res is Exception) {
-              _messages.add(_ChatMessage(role: 'error', message: '❌ ${res.toString()}'));
+              _messages.add(
+                _ChatMessage(role: 'error', message: '❌ ${res.toString()}'),
+              );
             } else {
-              _messages.add(_ChatMessage(role: 'ai', message: res[0]['generated_text'].toString()));
+              _messages.add(
+                _ChatMessage(
+                  role: 'ai',
+                  message: res[0]['generated_text'].toString(),
+                ),
+              );
             }
           });
           _scrollToBottom();
@@ -49,7 +56,9 @@ class _AiChatDemoScreenState extends State<AiChatDemoScreen> {
     } catch (e) {
       setState(() {
         _isTyping = false;
-        _messages.add(_ChatMessage(role: 'error', message: '❌ ${e.toString()}'));
+        _messages.add(
+          _ChatMessage(role: 'error', message: '❌ ${e.toString()}'),
+        );
       });
       _scrollToBottom();
     }
@@ -75,11 +84,12 @@ class _AiChatDemoScreenState extends State<AiChatDemoScreen> {
         margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isError
-              ? Colors.red.shade100
-              : isUser
-              ? Colors.blue.shade100
-              : Colors.grey.shade200,
+          color:
+              isError
+                  ? Colors.red.shade100
+                  : isUser
+                  ? Colors.blue.shade100
+                  : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(12),
         ),
         constraints: const BoxConstraints(maxWidth: 300),
@@ -96,9 +106,7 @@ class _AiChatDemoScreenState extends State<AiChatDemoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AI Chat'),
-      ),
+      appBar: AppBar(title: const Text('AI Chat')),
       body: Column(
         children: [
           Expanded(

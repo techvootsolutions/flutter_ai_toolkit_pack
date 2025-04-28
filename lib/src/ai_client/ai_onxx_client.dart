@@ -56,7 +56,10 @@ class OnnxAiClient {
   }
 
   /// Copy model and weight
-  Future<File> _copyModelAndWeights(String assetPath, String modelFileName) async {
+  Future<File> _copyModelAndWeights(
+    String assetPath,
+    String modelFileName,
+  ) async {
     final byteData = await rootBundle.load(assetPath);
     final tempDir = await getTemporaryDirectory();
     final modelFile = File('${tempDir.path}/$modelFileName');
@@ -65,7 +68,9 @@ class OnnxAiClient {
     // Attempt to find and copy weights file (if referenced)
     final assetBase = assetPath.replaceAll('.onnx', '');
     final weightsAssetPath = '$assetBase.bin';
-    final weightsFile = File('${tempDir.path}/${modelFileName.replaceAll(".onnx", "_weights_1.bin")}');
+    final weightsFile = File(
+      '${tempDir.path}/${modelFileName.replaceAll(".onnx", "_weights_1.bin")}',
+    );
 
     try {
       final weightData = await rootBundle.load(weightsAssetPath);
@@ -107,11 +112,13 @@ class OnnxAiClient {
       final session = _sessions[modelKey]!;
       final inferredShape = shape ?? _inferShape(input);
 
-      final inputTensor = OrtValueTensor.createTensorWithDataList(input, inferredShape);
-      final outputs = await session.runAsync(
-        OrtRunOptions(),
-        {inputName: inputTensor},
+      final inputTensor = OrtValueTensor.createTensorWithDataList(
+        input,
+        inferredShape,
       );
+      final outputs = await session.runAsync(OrtRunOptions(), {
+        inputName: inputTensor,
+      });
 
       final output = outputs?.first;
       final result = output?.value as T?;
@@ -151,4 +158,5 @@ class OnnxAiClient {
     OrtEnv.instance.release();
   }
 }
+
 /// 1800 896 9999

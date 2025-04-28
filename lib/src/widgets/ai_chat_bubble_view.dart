@@ -249,9 +249,7 @@ class AIChatTheme {
       hintTextColor: Colors.grey,
       sendButtonColor: Colors.blueAccent,
       inputTextStyle: const TextStyle(color: Colors.white),
-      chatBackgroundDecoration: const BoxDecoration(
-        color: Color(0xFF121212),
-      ),
+      chatBackgroundDecoration: const BoxDecoration(color: Color(0xFF121212)),
     );
   }
 
@@ -479,7 +477,8 @@ class AIChatTheme {
       senderBubbleStyle: userBubbleStyle ?? this.senderBubbleStyle,
       receiverBubbleStyle: aiBubbleStyle ?? this.receiverBubbleStyle,
       backgroundColor: backgroundColor ?? this.backgroundColor,
-      inputBarBackgroundColor: inputBarBackgroundColor ?? this.inputBarBackgroundColor,
+      inputBarBackgroundColor:
+          inputBarBackgroundColor ?? this.inputBarBackgroundColor,
       hintTextColor: hintTextColor ?? this.hintTextColor,
       sendButtonColor: sendButtonColor ?? this.sendButtonColor,
       sendButtonIconColor: sendButtonIconColor ?? this.sendButtonIconColor,
@@ -493,7 +492,8 @@ class AIChatTheme {
       inputDecoration: inputDecoration ?? this.inputDecoration,
       titleStyle: titleStyle ?? this.titleStyle,
       inputBarDecoration: inputBarDecoration ?? this.inputBarDecoration,
-      chatBackgroundDecoration: chatBackgroundDecoration ?? this.chatBackgroundDecoration,
+      chatBackgroundDecoration:
+          chatBackgroundDecoration ?? this.chatBackgroundDecoration,
     );
   }
 }
@@ -523,7 +523,8 @@ class AIChatBubble extends StatelessWidget {
     }
 
     final isUser = message.role == MessageUserRole.sender;
-    final bubbleStyle = isUser ? theme.senderBubbleStyle : theme.receiverBubbleStyle;
+    final bubbleStyle =
+        isUser ? theme.senderBubbleStyle : theme.receiverBubbleStyle;
     final avatar = isUser ? theme.userAvatar : theme.aiAvatar;
 
     // Create border if specified
@@ -539,7 +540,8 @@ class AIChatBubble extends StatelessWidget {
 
     Widget bubbleContent;
     if (message.isLoading) {
-      bubbleContent = customLoadingIndicator ??
+      bubbleContent =
+          customLoadingIndicator ??
           theme.loadingIndicator ??
           SizedBox(
             width: 24,
@@ -547,7 +549,9 @@ class AIChatBubble extends StatelessWidget {
             child: CircularProgressIndicator(
               strokeWidth: 2,
               valueColor: AlwaysStoppedAnimation<Color>(
-                isUser ? theme.senderBubbleStyle.textColor : theme.receiverBubbleStyle.textColor,
+                isUser
+                    ? theme.senderBubbleStyle.textColor
+                    : theme.receiverBubbleStyle.textColor,
               ),
             ),
           );
@@ -563,10 +567,7 @@ class AIChatBubble extends StatelessWidget {
         effectiveTextStyle = bubbleStyle.textStyle!;
       }
 
-      bubbleContent = Text(
-        message.message,
-        style: effectiveTextStyle,
-      );
+      bubbleContent = Text(message.message, style: effectiveTextStyle);
     }
 
     Widget bubble = Container(
@@ -588,7 +589,8 @@ class AIChatBubble extends StatelessWidget {
     // Add timestamp if enabled
     if (theme.showTimestamps) {
       bubble = Column(
-        crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           bubble,
@@ -600,11 +602,9 @@ class AIChatBubble extends StatelessWidget {
             ),
             child: Text(
               _formatTimestamp(message.timestamp),
-              style: theme.timestampStyle ??
-                  TextStyle(
-                    color: Colors.grey,
-                    fontSize: 10,
-                  ),
+              style:
+                  theme.timestampStyle ??
+                  TextStyle(color: Colors.grey, fontSize: 10),
             ),
           ),
         ],
@@ -615,11 +615,13 @@ class AIChatBubble extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(
-          mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+          mainAxisAlignment:
+              isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: isUser
-              ? [bubble, const SizedBox(width: 8), avatar]
-              : [avatar, const SizedBox(width: 8), bubble],
+          children:
+              isUser
+                  ? [bubble, const SizedBox(width: 8), avatar]
+                  : [avatar, const SizedBox(width: 8), bubble],
         ),
       );
     } else {
@@ -633,9 +635,14 @@ class AIChatBubble extends StatelessWidget {
   String _formatTimestamp(DateTime timestamp) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final messageDate = DateTime(timestamp.year, timestamp.month, timestamp.day);
+    final messageDate = DateTime(
+      timestamp.year,
+      timestamp.month,
+      timestamp.day,
+    );
 
-    String formattedTime = '${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}';
+    String formattedTime =
+        '${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}';
 
     if (messageDate == today) {
       return formattedTime;
@@ -658,10 +665,12 @@ class AnimatedTypingIndicator extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<AnimatedTypingIndicator> createState() => _AnimatedTypingIndicatorState();
+  State<AnimatedTypingIndicator> createState() =>
+      _AnimatedTypingIndicatorState();
 }
 
-class _AnimatedTypingIndicatorState extends State<AnimatedTypingIndicator> with TickerProviderStateMixin {
+class _AnimatedTypingIndicatorState extends State<AnimatedTypingIndicator>
+    with TickerProviderStateMixin {
   late List<AnimationController> _controllers;
   late List<Animation<double>> _animations;
 
@@ -676,14 +685,12 @@ class _AnimatedTypingIndicatorState extends State<AnimatedTypingIndicator> with 
       );
     });
 
-    _animations = _controllers.map((controller) {
-      return Tween<double>(begin: 0.3, end: 1.0).animate(
-        CurvedAnimation(
-          parent: controller,
-          curve: Curves.easeInOut,
-        ),
-      );
-    }).toList();
+    _animations =
+        _controllers.map((controller) {
+          return Tween<double>(begin: 0.3, end: 1.0).animate(
+            CurvedAnimation(parent: controller, curve: Curves.easeInOut),
+          );
+        }).toList();
 
     _startAnimation();
   }

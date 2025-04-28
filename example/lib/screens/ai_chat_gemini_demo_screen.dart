@@ -12,10 +12,7 @@ class AIChatController extends ChangeNotifier {
   void addUserMessage(String message) {
     if (message.trim().isEmpty) return;
 
-    _messages.add(ChatMessage(
-      message: message,
-      role: MessageUserRole.sender,
-    ));
+    _messages.add(ChatMessage(message: message, role: MessageUserRole.sender));
     notifyListeners();
 
     _sendMessageToAI(message);
@@ -23,11 +20,9 @@ class AIChatController extends ChangeNotifier {
 
   Future<void> _sendMessageToAI(String message) async {
     _isTyping = true;
-    _messages.add(ChatMessage(
-      message: "",
-      role: MessageUserRole.receiver,
-      isLoading: true,
-    ));
+    _messages.add(
+      ChatMessage(message: "", role: MessageUserRole.receiver, isLoading: true),
+    );
     notifyListeners();
 
     try {
@@ -40,19 +35,24 @@ class AIChatController extends ChangeNotifier {
       _messages.removeLast();
 
       // Add actual AI response
-      _messages.add(ChatMessage(
-        message: response['candidates'][0]["content"]["parts"][0]["text"],
-        role: MessageUserRole.receiver,
-      ));
+      _messages.add(
+        ChatMessage(
+          message: response['candidates'][0]["content"]["parts"][0]["text"],
+          role: MessageUserRole.receiver,
+        ),
+      );
     } catch (e) {
       // Remove loading message
       _messages.removeLast();
 
       // Add error message
-      _messages.add(ChatMessage(
-        message: "Sorry, something went wrong. Please try again. Error: ${e.toString()}",
-        role: MessageUserRole.receiver,
-      ));
+      _messages.add(
+        ChatMessage(
+          message:
+              "Sorry, something went wrong. Please try again. Error: ${e.toString()}",
+          role: MessageUserRole.receiver,
+        ),
+      );
     } finally {
       _isTyping = false;
       notifyListeners();
@@ -112,7 +112,9 @@ class AIChatScreen extends StatelessWidget {
 
     showModalBottomSheet(
       context: context,
-      builder: (bottomSheetContext) => ThemeSelectorWidget(themeManager: themeManager),
+      builder:
+          (bottomSheetContext) =>
+              ThemeSelectorWidget(themeManager: themeManager),
     );
   }
 }
@@ -120,7 +122,8 @@ class AIChatScreen extends StatelessWidget {
 class ThemeSelectorWidget extends StatelessWidget {
   final ThemeManager themeManager;
 
-  const ThemeSelectorWidget({Key? key, required this.themeManager}) : super(key: key);
+  const ThemeSelectorWidget({Key? key, required this.themeManager})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -183,11 +186,11 @@ class ThemeSelectorWidget extends StatelessWidget {
   }
 
   Widget _buildThemeOption(
-      BuildContext context,
-      String name,
-      AIChatTheme theme,
-      Color color
-      ) {
+    BuildContext context,
+    String name,
+    AIChatTheme theme,
+    Color color,
+  ) {
     return GestureDetector(
       onTap: () {
         themeManager.setTheme(theme);
@@ -226,7 +229,8 @@ class ChatScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: theme.chatBackgroundDecoration ??
+      decoration:
+          theme.chatBackgroundDecoration ??
           BoxDecoration(color: theme.backgroundColor),
       child: Column(
         children: [
@@ -239,7 +243,9 @@ class ChatScreenBody extends StatelessWidget {
                   itemCount: controller.messages.length,
                   itemBuilder: (context, index) {
                     final message =
-                    controller.messages[controller.messages.length - 1 - index];
+                        controller.messages[controller.messages.length -
+                            1 -
+                            index];
                     return AIChatBubble(
                       message: message,
                       theme: theme,
@@ -291,12 +297,11 @@ class _ChatInputBarState extends State<_ChatInputBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: widget.theme.inputBarDecoration ??
+      decoration:
+          widget.theme.inputBarDecoration ??
           BoxDecoration(
             color: widget.theme.inputBarBackgroundColor,
-            border: Border(
-              top: BorderSide(color: Colors.grey.shade200),
-            ),
+            border: Border(top: BorderSide(color: Colors.grey.shade200)),
           ),
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
       child: Row(
@@ -305,7 +310,8 @@ class _ChatInputBarState extends State<_ChatInputBar> {
             child: TextField(
               controller: _textController,
               style: widget.theme.inputTextStyle,
-              decoration: widget.theme.inputDecoration ??
+              decoration:
+                  widget.theme.inputDecoration ??
                   InputDecoration(
                     hintText: 'Type a message...',
                     hintStyle: TextStyle(color: widget.theme.hintTextColor),
@@ -315,7 +321,8 @@ class _ChatInputBarState extends State<_ChatInputBar> {
                     ),
                     filled: true,
                     fillColor: widget.theme.inputBarBackgroundColor.withOpacity(
-                        0.1),
+                      0.1,
+                    ),
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
                       vertical: 10.0,

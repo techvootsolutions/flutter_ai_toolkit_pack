@@ -30,7 +30,8 @@ class AiGeminiClient {
 
   static void initialize({
     required String apiKey,
-    String baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+    String baseUrl =
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
     Map<String, String>? additionalHeaders,
     Map<String, dynamic>? additionalParams,
   }) {
@@ -61,9 +62,9 @@ class AiGeminiClient {
       'contents': [
         {
           'parts': [
-            {'text': content is String ? content : jsonEncode(content)}
-          ]
-        }
+            {'text': content is String ? content : jsonEncode(content)},
+          ],
+        },
       ],
       ...(additionalParams ?? {}),
       if (options != null) ...options,
@@ -94,7 +95,9 @@ class AiGeminiClient {
         result = returnRaw ? response.body : jsonDecode(response.body);
         return result;
       } else {
-        throw Exception('Gemini API error: ${response.statusCode}\n${response.body}');
+        throw Exception(
+          'Gemini API error: ${response.statusCode}\n${response.body}',
+        );
       }
     } catch (e) {
       result = e;
@@ -121,7 +124,10 @@ class AiGeminiClient {
   }) async {
     dynamic result;
     // Using the vision model endpoint
-    final String visionEndpoint = baseUrl.replaceAll('gemini-pro', 'gemini-pro-vision');
+    final String visionEndpoint = baseUrl.replaceAll(
+      'gemini-pro',
+      'gemini-pro-vision',
+    );
     final uri = Uri.parse('$visionEndpoint?key=$apiKey');
 
     final headers = {
@@ -140,13 +146,10 @@ class AiGeminiClient {
             if (promptText != null && promptText.isNotEmpty)
               {'text': promptText},
             {
-              'inline_data': {
-                'mime_type': mimeType,
-                'data': base64Image,
-              }
-            }
-          ]
-        }
+              'inline_data': {'mime_type': mimeType, 'data': base64Image},
+            },
+          ],
+        },
       ],
       ...(additionalParams ?? {}),
       if (options != null) ...options,
@@ -177,7 +180,9 @@ class AiGeminiClient {
         result = returnRaw ? response.body : jsonDecode(response.body);
         return result;
       } else {
-        throw Exception('Gemini Vision API error: ${response.statusCode}\n${response.body}');
+        throw Exception(
+          'Gemini Vision API error: ${response.statusCode}\n${response.body}',
+        );
       }
     } catch (e) {
       result = e;

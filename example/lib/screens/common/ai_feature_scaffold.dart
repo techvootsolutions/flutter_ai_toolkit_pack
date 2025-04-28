@@ -45,9 +45,13 @@ class AiFeatureScaffold extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Expanded(
-              child: resultWidget ??
+              child:
+                  resultWidget ??
                   SingleChildScrollView(
-                    child: Text(result ?? '', style: const TextStyle(fontSize: 16)),
+                    child: Text(
+                      result ?? '',
+                      style: const TextStyle(fontSize: 16),
+                    ),
                   ),
             ),
           ],

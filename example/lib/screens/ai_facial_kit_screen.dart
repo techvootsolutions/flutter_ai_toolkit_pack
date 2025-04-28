@@ -39,7 +39,9 @@ class _FaceEnhancerScreenState extends State<FaceEnhancerScreen> {
       });
     } catch (e) {
       debugPrint('Error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to process image: $e')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to process image: $e')));
     } finally {
       setState(() {
         isProcessing = false;
@@ -65,12 +67,12 @@ class _FaceEnhancerScreenState extends State<FaceEnhancerScreen> {
             if (isProcessing) const CircularProgressIndicator(),
             if (originalImage != null) ...[
               const Text('Original Image'),
-              Image.memory(originalImage!, height: 350,width: double.infinity,),
+              Image.memory(originalImage!, height: 350, width: double.infinity),
             ],
             if (enhancedImage != null) ...[
               const SizedBox(height: 20),
               const Text('Enhanced Image'),
-              Image.memory(enhancedImage!, height: 350,width: double.infinity),
+              Image.memory(enhancedImage!, height: 350, width: double.infinity),
             ],
           ],
         ),

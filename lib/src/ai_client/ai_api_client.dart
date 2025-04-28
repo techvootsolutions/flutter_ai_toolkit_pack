@@ -10,10 +10,7 @@ class AiApiClient {
 
   final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
-  AiApiClient._internal({
-    required this.apiToken,
-    required this.baseUrl,
-  });
+  AiApiClient._internal({required this.apiToken, required this.baseUrl});
 
   static AiApiClient get instance {
     if (_instance == null) {
@@ -28,10 +25,7 @@ class AiApiClient {
     required String apiToken,
     String baseUrl = 'https://api-inference.huggingface.co/models',
   }) {
-    _instance = AiApiClient._internal(
-      apiToken: apiToken,
-      baseUrl: baseUrl,
-    );
+    _instance = AiApiClient._internal(apiToken: apiToken, baseUrl: baseUrl);
   }
 
   Future<dynamic> infer({
@@ -49,10 +43,7 @@ class AiApiClient {
       'Content-Type': 'application/json',
     };
 
-    final body = jsonEncode({
-      'inputs': input,
-      if (options != null) ...options,
-    });
+    final body = jsonEncode({'inputs': input, if (options != null) ...options});
 
     try {
       isLoading.value = true;
@@ -77,7 +68,9 @@ class AiApiClient {
         result = returnRaw ? response.body : jsonDecode(response.body);
         return result;
       } else {
-        throw Exception('AI API error: ${response.statusCode}\n${response.body}');
+        throw Exception(
+          'AI API error: ${response.statusCode}\n${response.body}',
+        );
       }
     } catch (e) {
       result = e;
@@ -130,7 +123,9 @@ class AiApiClient {
         result = jsonDecode(response.body);
         return result;
       } else {
-        throw Exception('AI API error: ${response.statusCode}\n${response.body}');
+        throw Exception(
+          'AI API error: ${response.statusCode}\n${response.body}',
+        );
       }
     } catch (e) {
       result = e;

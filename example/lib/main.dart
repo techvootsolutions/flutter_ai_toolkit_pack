@@ -7,6 +7,7 @@ import 'package:example/screens/ai_image_generative_screen.dart';
 import 'package:example/screens/ai_image_labeling_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ai_toolkit_pack/flutter_ai_toolkit_pack.dart';
+
 class OnnxModels {
   static const String chatGhibli = 'chat_ghibli';
   static const String imageGhibliGen = 'image_ghibli_gen';

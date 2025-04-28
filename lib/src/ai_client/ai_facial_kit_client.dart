@@ -20,7 +20,8 @@ class FacialAIKitClient {
 
   /// Register ONNX models
   void registerModels(Map<String, String> models) {
-    if (_isInitialized) throw Exception('Cannot register after initialization.');
+    if (_isInitialized)
+      throw Exception('Cannot register after initialization.');
     _modelPaths.addAll(models);
   }
 
@@ -31,12 +32,17 @@ class FacialAIKitClient {
     OrtEnv.instance.init();
 
     registerModels({
-      'face_detector': 'packages/flutter_ai_toolkit_pack/assets/aimodels/face_detector.onnx',
-      'beauty_gan': 'packages/flutter_ai_toolkit_pack/assets/aimodels/beauty_gan.onnx',
+      'face_detector':
+          'packages/flutter_ai_toolkit_pack/assets/aimodels/face_detector.onnx',
+      'beauty_gan':
+          'packages/flutter_ai_toolkit_pack/assets/aimodels/beauty_gan.onnx',
     });
 
     for (final entry in _modelPaths.entries) {
-      final modelPath = await _copyAssetToTemp(entry.value, '${entry.key}.onnx');
+      final modelPath = await _copyAssetToTemp(
+        entry.value,
+        '${entry.key}.onnx',
+      );
       final session = OrtSession.fromFile(modelPath, OrtSessionOptions());
       _sessions[entry.key] = session;
     }
@@ -57,7 +63,13 @@ class FacialAIKitClient {
     if (faceBox == null) throw Exception('No face detected');
 
     // 2. Crop face
-    final croppedFace = img.copyCrop(inputImage, x: faceBox.left.toInt(), y:faceBox.top.toInt(), width:faceBox.width.toInt(), height:faceBox.height.toInt());
+    final croppedFace = img.copyCrop(
+      inputImage,
+      x: faceBox.left.toInt(),
+      y: faceBox.top.toInt(),
+      width: faceBox.width.toInt(),
+      height: faceBox.height.toInt(),
+    );
     final croppedBytes = Uint8List.fromList(img.encodeJpg(croppedFace));
 
     // 3. Apply enhancement (e.g., BeautyGAN)
@@ -67,7 +79,12 @@ class FacialAIKitClient {
     final finalImage = img.Image.from(inputImage);
     final overlay = img.decodeImage(enhancedFace);
     if (overlay != null) {
-      img.compositeImage(finalImage, overlay, dstX: faceBox.left.toInt(), dstY: faceBox.top.toInt());
+      img.compositeImage(
+        finalImage,
+        overlay,
+        dstX: faceBox.left.toInt(),
+        dstY: faceBox.top.toInt(),
+      );
     }
 
     return Uint8List.fromList(img.encodeJpg(finalImage));
@@ -79,10 +96,9 @@ class FacialAIKitClient {
 
     final inputTensor = _imageToTensor(input, [1, 3, 240, 320]);
 
-    final outputs = await session.runAsync(
-      OrtRunOptions(),
-      {'input': inputTensor},
-    );
+    final outputs = await session.runAsync(OrtRunOptions(), {
+      'input': inputTensor,
+    });
 
     final output = outputs?.first?.value as List?;
     if (output == null || output.isEmpty) return null;
@@ -140,10 +156,16 @@ class FacialAIKitClient {
     final outputFace = _tensorToImage1(enhanced, faceImg.width, faceImg.height);
     return Uint8List.fromList(img.encodeJpg(outputFace));
   }
+
   /// Resize before tensor conversion
   img.Image _resizeImage(img.Image image) {
-    return img.copyResize(image, width: 320, height: 240); // match model dimensions
+    return img.copyResize(
+      image,
+      width: 320,
+      height: 240,
+    ); // match model dimensions
   }
+
   /// Converts image to normalized float32 tensor
   OrtValueTensor _imageToTensor(img.Image image, List<int> shape) {
     final resizedImage = _resizeImage(image); // resize here
@@ -163,7 +185,7 @@ class FacialAIKitClient {
     final imgBytes = Uint8List.fromList(
       List<int>.generate(
         width * height * 3,
-            (i) => (flat[i] * 255).clamp(0, 255).toInt(),
+        (i) => (flat[i] * 255).clamp(0, 255).toInt(),
       ),
     );
     return img.Image.fromBytes(
@@ -176,7 +198,13 @@ class FacialAIKitClient {
     );
   }
 
-  img.Image _tensorToImage1(dynamic tensorData, int width, int height, {int? upscaleWidth, int? upscaleHeight}) {
+  img.Image _tensorToImage1(
+    dynamic tensorData,
+    int width,
+    int height, {
+    int? upscaleWidth,
+    int? upscaleHeight,
+  }) {
     final data = tensorData as List<List<List<List<double>>>>;
     final channels = data[0]; // shape: [3][H][W]
 
@@ -207,12 +235,16 @@ class FacialAIKitClient {
 
     // Resize if upscale dimensions are provided
     if (upscaleWidth != null && upscaleHeight != null) {
-      result = img.copyResize(result, width: upscaleWidth, height: upscaleHeight, interpolation: img.Interpolation.linear);
+      result = img.copyResize(
+        result,
+        width: upscaleWidth,
+        height: upscaleHeight,
+        interpolation: img.Interpolation.linear,
+      );
     }
 
     return result;
   }
-
 
   /// Copy model from assets to temp dir
   Future<File> _copyAssetToTemp(String assetPath, String fileName) async {

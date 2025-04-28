@@ -10,7 +10,8 @@ class AiImageGenerativeScreen extends StatefulWidget {
   const AiImageGenerativeScreen({super.key});
 
   @override
-  State<AiImageGenerativeScreen> createState() => _AiImageGenerativeScreenState();
+  State<AiImageGenerativeScreen> createState() =>
+      _AiImageGenerativeScreenState();
 }
 
 class _AiImageGenerativeScreenState extends State<AiImageGenerativeScreen> {
@@ -33,7 +34,7 @@ class _AiImageGenerativeScreenState extends State<AiImageGenerativeScreen> {
       },
       onComplete: (res) {
         // if (res is Uint8List) {
-          _generatedImage = base64Decode(res);
+        _generatedImage = base64Decode(res);
         // } else {
         //   _error = 'Failed to generate image';
         // }
@@ -49,11 +50,17 @@ class _AiImageGenerativeScreenState extends State<AiImageGenerativeScreen> {
       title: 'Image Generation',
       controller: _controller,
       onSubmit: _generateImage,
-      resultWidget: _generatedImage != null
-          ? Image.memory(_generatedImage!,color: Colors.lightGreen,height: 100,width: 100,)
-          : _error != null
-          ? Text(_error!)
-          : null,
+      resultWidget:
+          _generatedImage != null
+              ? Image.memory(
+                _generatedImage!,
+                color: Colors.lightGreen,
+                height: 100,
+                width: 100,
+              )
+              : _error != null
+              ? Text(_error!)
+              : null,
     );
   }
 }
